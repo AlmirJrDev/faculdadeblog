@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Meu Blog de Atividades</title>
+<link>https://AlmirJrDev.github.io/faculdadeblog/</link>
+<atom:link href="https://AlmirJrDev.github.io/faculdadeblog/index.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.8.26</generator>
+<lastBuildDate>Sat, 23 Nov 2024 03:00:00 GMT</lastBuildDate>
+<item>
+  <title>{B4F502887207:/posts/atividade01/index.html}</title>
+  <dc:creator>Seu Nome</dc:creator>
+  <link>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade01/</link>
+  <description>{B4F502887207:/posts/atividade01/index.html}</description>
+  <category>python</category>
+  <category>api</category>
+  <category>visualização</category>
+  <guid>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade01/</guid>
+  <pubDate>Sat, 23 Nov 2024 03:00:00 GMT</pubDate>
+  <media:content url="https://AlmirJrDev.github.io/faculdadeblog/posts/atividade01/thumbnail.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/atividade02/index.html}</title>
+  <dc:creator>Seu Nome</dc:creator>
+  <link>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade02/</link>
+  <description>{B4F502887207:/posts/atividade02/index.html}</description>
+  <category>python</category>
+  <category>api</category>
+  <category>mapas</category>
+  <category>geolocalização</category>
+  <guid>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade02/</guid>
+  <pubDate>Sat, 23 Nov 2024 03:00:00 GMT</pubDate>
+  <media:content url="https://AlmirJrDev.github.io/faculdadeblog/posts/atividade02/thumbnail.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/atividade03/index.html}</title>
+  <dc:creator>Seu Nome</dc:creator>
+  <link>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade03/</link>
+  <description>{B4F502887207:/posts/atividade03/index.html}</description>
+  <category>python</category>
+  <category>machine-learning</category>
+  <category>estatística</category>
+  <category>matemática</category>
+  <guid>https://AlmirJrDev.github.io/faculdadeblog/posts/atividade03/</guid>
+  <pubDate>Sat, 23 Nov 2024 03:00:00 GMT</pubDate>
+  <media:content url="https://AlmirJrDev.github.io/faculdadeblog/posts/atividade03/thumbnail.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

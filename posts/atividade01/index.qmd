@@ -1,0 +1,146 @@
+---
+title: "Atividade 01 - Cotação do Dólar"
+author: "Seu Nome"
+date: "2024-11-23"
+categories: [python, api, visualização]
+image: "thumbnail.jpg"
+---
+
+## Objetivo
+
+Desenvolver um script Python que consulta a API do Banco Central do Brasil para obter cotações históricas do dólar e gera visualizações interativas.
+
+## Tecnologias Utilizadas
+
+- **Python 3.x**
+- **requests**: Para fazer requisições HTTP à API
+- **pandas**: Para manipulação de dados
+- **plotly**: Para criar gráficos interativos
+
+## Descrição da Solução
+
+### 1. Consulta à API do BCB
+
+A função `obter_cotacao_dolar_mensal()` recebe um período no formato "MMYYYY" e:
+
+```python
+# Construir a URL da API
+url_base = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/"
+url_completa = (
+    f"{url_base}CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?"
+    f"@dataInicial='{data_inicial}'&@dataFinalCotacao='{data_final}'&$format=json"
+)
+```
+
+**Importante**: A API utiliza o formato `MM-dd-yyyy` para as datas.
+
+### 2. Processamento dos Dados
+
+Os dados retornados são processados usando pandas:
+
+```python
+df_api = pd.DataFrame(data['value'])
+df_api['dataHoraCotacao'] = pd.to_datetime(df_api['dataHoraCotacao'])
+df_api['Data'] = df_api['dataHoraCotacao'].dt.date
+```
+
+### 3. Preenchimento de Dados Faltantes
+
+Como a API não retorna cotações para finais de semana e feriados, implementei uma solução que:
+
+1. Cria uma série completa com todos os dias do mês
+2. Faz merge com os dados da API
+3. Preenche valores ausentes com a cotação do dia útil anterior (forward fill)
+
+```python
+# Criar série completa de datas
+all_dates = pd.date_range(start=start_date, end=end_date, freq='D').date
+df_completo = pd.DataFrame({'Data': all_dates})
+
+# Merge e preenchimento
+df_completo = df_completo.merge(df_api, on='Data', how='left')
+df_completo['cotacaoVenda'] = df_completo['cotacaoVenda'].fillna(method='ffill')
+```
+
+### 4. Visualização com Plotly
+
+O gráfico interativo é gerado usando Plotly Express:
+
+```python
+fig = px.line(
+    df_completo, 
+    x='Data', 
+    y='Cotação de Venda (R$)', 
+    title=f'Cotação de Venda do Dólar (PTAX) - {mes_nome}/{ano}',
+    markers=True
+)
+```
+
+## Resultados
+
+Para o período de **julho/2016**, obtivemos:
+
+- **31 dias** de dados completos
+- **Mínima**: R$ X.XXXX
+- **Máxima**: R$ X.XXXX
+- **Média**: R$ X.XXXX
+
+### Gráfico Interativo
+
+O gráfico gerado permite:
+- Visualizar a tendência da cotação ao longo do mês
+- Identificar pontos específicos (hover)
+- Exportar como imagem
+- Fazer zoom em períodos específicos
+
+[Clique aqui para visualizar o gráfico completo](atividade1_cotacao_dolar_072016.html)
+
+## Código Completo
+
+```{python}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Ver código completo"
+
+import requests
+import pandas as pd
+import plotly.express as px
+from datetime import datetime, timedelta
+import calendar
+
+def obter_cotacao_dolar_mensal(mm_yyyy: str):
+    """
+    Obtém a cotação do dólar para um mês/ano específico e gera um gráfico de linha.
+    Preenche dias sem cotação (finais de semana/feriados) com a cotação do dia útil anterior.
+    
+    Args:
+        mm_yyyy (str): Mês e ano no formato "MMYYYY" (ex: "082021").
+    
+    Returns:
+        str: Caminho para o arquivo HTML do gráfico Plotly ou mensagem de erro.
+    """
+    # [Insira aqui o código completo da função]
+    pass
+
+if __name__ == "__main__":
+    resultado = obter_cotacao_dolar_mensal("072016")
+    print(resultado)
+```
+
+## Aprendizados
+
+1. **APIs RESTful**: Como fazer requisições e processar dados JSON
+2. **Manipulação de datas**: Trabalhar com diferentes formatos e criar séries temporais
+3. **Preenchimento de dados**: Técnicas para lidar com dados faltantes em séries temporais
+4. **Visualização interativa**: Criar gráficos profissionais com Plotly
+
+## Possíveis Melhorias
+
+- Adicionar mais estatísticas (variação percentual, volatilidade)
+- Implementar comparação entre múltiplos períodos
+- Adicionar suporte para outras moedas
+- Cache de requisições para evitar múltiplas chamadas à API
+
+---
+
+**Repositório**: [Link para o código no GitHub](https://github.com/seu-usuario/seu-repo)
