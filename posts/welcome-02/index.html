@@ -9,7 +9,7 @@
 <meta name="author" content="Seu Nome">
 <meta name="dcterms.date" content="2024-11-23">
 
-<title>Atividade 03 - Regressão Linear com Álgebra Matricial – Meu Blog de Atividades</title>
+<title>Atividade 02 - Monitoramento de Ônibus em Tempo Real – Meu Blog de Atividades</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,35 +106,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -182,12 +153,12 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Atividade 03 - Regressão Linear com Álgebra Matricial</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Atividade 02 - Monitoramento de Ônibus em Tempo Real</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
                                 <div class="quarto-categories">
                 <div class="quarto-category">python</div>
-                <div class="quarto-category">machine-learning</div>
-                <div class="quarto-category">estatística</div>
-                <div class="quarto-category">matemática</div>
+                <div class="quarto-category">api</div>
+                <div class="quarto-category">mapas</div>
+                <div class="quarto-category">geolocalização</div>
               </div>
                   </div>
   </div>
@@ -223,36 +194,23 @@ window.Quarto = {
   <ul>
   <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
   <li><a href="#tecnologias-utilizadas" id="toc-tecnologias-utilizadas" class="nav-link" data-scroll-target="#tecnologias-utilizadas">Tecnologias Utilizadas</a></li>
-  <li><a href="#fundamentação-matemática" id="toc-fundamentação-matemática" class="nav-link" data-scroll-target="#fundamentação-matemática">Fundamentação Matemática</a>
+  <li><a href="#arquitetura-da-solução" id="toc-arquitetura-da-solução" class="nav-link" data-scroll-target="#arquitetura-da-solução">Arquitetura da Solução</a>
   <ul class="collapse">
-  <li><a href="#fórmula-da-regressão-linear" id="toc-fórmula-da-regressão-linear" class="nav-link" data-scroll-target="#fórmula-da-regressão-linear">Fórmula da Regressão Linear</a></li>
-  <li><a href="#solução-matricial" id="toc-solução-matricial" class="nav-link" data-scroll-target="#solução-matricial">Solução Matricial</a></li>
-  <li><a href="#coeficiente-de-determinação-r²" id="toc-coeficiente-de-determinação-r²" class="nav-link" data-scroll-target="#coeficiente-de-determinação-r²">Coeficiente de Determinação (R²)</a></li>
-  </ul></li>
-  <li><a href="#implementação" id="toc-implementação" class="nav-link" data-scroll-target="#implementação">Implementação</a>
-  <ul class="collapse">
-  <li><a href="#carregamento-dos-dados" id="toc-carregamento-dos-dados" class="nav-link" data-scroll-target="#carregamento-dos-dados">1. Carregamento dos Dados</a></li>
-  <li><a href="#construção-da-matriz-x" id="toc-construção-da-matriz-x" class="nav-link" data-scroll-target="#construção-da-matriz-x">2. Construção da Matriz X</a></li>
-  <li><a href="#cálculo-dos-coeficientes" id="toc-cálculo-dos-coeficientes" class="nav-link" data-scroll-target="#cálculo-dos-coeficientes">3. Cálculo dos Coeficientes</a></li>
-  <li><a href="#predições-e-avaliação" id="toc-predições-e-avaliação" class="nav-link" data-scroll-target="#predições-e-avaliação">4. Predições e Avaliação</a></li>
-  <li><a href="#visualização" id="toc-visualização" class="nav-link" data-scroll-target="#visualização">5. Visualização</a></li>
+  <li><a href="#autenticação" id="toc-autenticação" class="nav-link" data-scroll-target="#autenticação">1. Autenticação</a></li>
+  <li><a href="#classe-monitoramentoonibus" id="toc-classe-monitoramentoonibus" class="nav-link" data-scroll-target="#classe-monitoramentoonibus">2. Classe MonitoramentoOnibus</a></li>
+  <li><a href="#busca-de-linhas" id="toc-busca-de-linhas" class="nav-link" data-scroll-target="#busca-de-linhas">3. Busca de Linhas</a></li>
+  <li><a href="#obtenção-de-dados-em-tempo-real" id="toc-obtenção-de-dados-em-tempo-real" class="nav-link" data-scroll-target="#obtenção-de-dados-em-tempo-real">4. Obtenção de Dados em Tempo Real</a></li>
+  <li><a href="#visualização-com-folium" id="toc-visualização-com-folium" class="nav-link" data-scroll-target="#visualização-com-folium">5. Visualização com Folium</a></li>
+  <li><a href="#legenda-personalizada" id="toc-legenda-personalizada" class="nav-link" data-scroll-target="#legenda-personalizada">6. Legenda Personalizada</a></li>
   </ul></li>
   <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados">Resultados</a>
   <ul class="collapse">
-  <li><a href="#equação-obtida" id="toc-equação-obtida" class="nav-link" data-scroll-target="#equação-obtida">Equação Obtida</a></li>
-  <li><a href="#qualidade-do-ajuste" id="toc-qualidade-do-ajuste" class="nav-link" data-scroll-target="#qualidade-do-ajuste">Qualidade do Ajuste</a></li>
-  <li><a href="#gráfico-interativo" id="toc-gráfico-interativo" class="nav-link" data-scroll-target="#gráfico-interativo">Gráfico Interativo</a></li>
+  <li><a href="#mapa-interativo" id="toc-mapa-interativo" class="nav-link" data-scroll-target="#mapa-interativo">Mapa Interativo</a></li>
   </ul></li>
   <li><a href="#código-completo" id="toc-código-completo" class="nav-link" data-scroll-target="#código-completo">Código Completo</a></li>
-  <li><a href="#análise-dos-resultados" id="toc-análise-dos-resultados" class="nav-link" data-scroll-target="#análise-dos-resultados">Análise dos Resultados</a>
-  <ul class="collapse">
-  <li><a href="#pontos-fortes" id="toc-pontos-fortes" class="nav-link" data-scroll-target="#pontos-fortes">Pontos Fortes</a></li>
-  <li><a href="#limitações" id="toc-limitações" class="nav-link" data-scroll-target="#limitações">Limitações</a></li>
-  </ul></li>
+  <li><a href="#desafios-encontrados" id="toc-desafios-encontrados" class="nav-link" data-scroll-target="#desafios-encontrados">Desafios Encontrados</a></li>
   <li><a href="#aprendizados" id="toc-aprendizados" class="nav-link" data-scroll-target="#aprendizados">Aprendizados</a></li>
-  <li><a href="#comparação-com-bibliotecas-prontas" id="toc-comparação-com-bibliotecas-prontas" class="nav-link" data-scroll-target="#comparação-com-bibliotecas-prontas">Comparação com Bibliotecas Prontas</a></li>
   <li><a href="#possíveis-melhorias" id="toc-possíveis-melhorias" class="nav-link" data-scroll-target="#possíveis-melhorias">Possíveis Melhorias</a></li>
-  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências">Referências</a></li>
   </ul>
 </nav>
     </div>
@@ -265,209 +223,173 @@ window.Quarto = {
 
 <section id="objetivo" class="level2">
 <h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
-<p>Implementar regressão linear do zero usando álgebra matricial (sem bibliotecas de ML prontas) para prever salários baseados em anos de estudo.</p>
+<p>Criar um sistema de monitoramento em tempo real de ônibus da SPTrans utilizando a API Olho Vivo, com visualização em mapa interativo.</p>
 </section>
 <section id="tecnologias-utilizadas" class="level2">
 <h2 class="anchored" data-anchor-id="tecnologias-utilizadas">Tecnologias Utilizadas</h2>
 <ul>
 <li><strong>Python 3.x</strong></li>
-<li><strong>numpy</strong>: Para operações matriciais</li>
-<li><strong>pandas</strong>: Para manipulação de dados</li>
-<li><strong>plotly</strong>: Para visualização</li>
+<li><strong>requests</strong>: Para autenticação e requisições à API</li>
+<li><strong>folium</strong>: Para criar mapas interativos</li>
+<li><strong>API SPTrans Olho Vivo</strong>: Dados de transporte público de São Paulo</li>
 </ul>
 </section>
-<section id="fundamentação-matemática" class="level2">
-<h2 class="anchored" data-anchor-id="fundamentação-matemática">Fundamentação Matemática</h2>
-<section id="fórmula-da-regressão-linear" class="level3">
-<h3 class="anchored" data-anchor-id="fórmula-da-regressão-linear">Fórmula da Regressão Linear</h3>
-<p>A regressão linear busca encontrar a melhor reta que se ajusta aos dados:</p>
-<p><span class="math display">\[
-y = a + bx
-\]</span></p>
-<p>Onde: - <span class="math inline">\(y\)</span> = variável dependente (salário) - <span class="math inline">\(x\)</span> = variável independente (anos de estudo) - <span class="math inline">\(a\)</span> = intercepto - <span class="math inline">\(b\)</span> = coeficiente angular</p>
+<section id="arquitetura-da-solução" class="level2">
+<h2 class="anchored" data-anchor-id="arquitetura-da-solução">Arquitetura da Solução</h2>
+<section id="autenticação" class="level3">
+<h3 class="anchored" data-anchor-id="autenticação">1. Autenticação</h3>
+<p>A API SPTrans exige autenticação via POST com um token:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> autenticar(<span class="va">self</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Autentica na API da SPTrans"""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Login/Autenticar?token=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>token<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> <span class="va">self</span>.session.post(url)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.text <span class="op">==</span> <span class="st">"true"</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✓ Autenticação realizada com sucesso!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Importante</strong>: A sessão autenticada deve ser mantida para todas as requisições subsequentes.</p>
 </section>
-<section id="solução-matricial" class="level3">
-<h3 class="anchored" data-anchor-id="solução-matricial">Solução Matricial</h3>
-<p>Usando álgebra linear, podemos resolver o sistema usando:</p>
-<p><span class="math display">\[
-\beta = (X^TX)^{-1}X^Ty
-\]</span></p>
-<p>Onde: - <span class="math inline">\(\beta\)</span> = vetor de coeficientes <span class="math inline">\([a, b]\)</span> - <span class="math inline">\(X\)</span> = matriz de design (com coluna de 1s para o intercepto) - <span class="math inline">\(y\)</span> = vetor de respostas</p>
+<section id="classe-monitoramentoonibus" class="level3">
+<h3 class="anchored" data-anchor-id="classe-monitoramentoonibus">2. Classe MonitoramentoOnibus</h3>
+<p>Implementei uma classe para encapsular todas as funcionalidades:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MonitoramentoOnibus:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, token):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.token <span class="op">=</span> token</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.session <span class="op">=</span> requests.Session()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.base_url <span class="op">=</span> <span class="st">"http://api.olhovivo.sptrans.com.br/v2.1"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.autenticar()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="coeficiente-de-determinação-r²" class="level3">
-<h3 class="anchored" data-anchor-id="coeficiente-de-determinação-r²">Coeficiente de Determinação (R²)</h3>
-<p>Mede a qualidade do ajuste:</p>
-<p><span class="math display">\[
-R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
-\]</span></p>
-<ul>
-<li><span class="math inline">\(SS_{res}\)</span> = soma dos quadrados dos resíduos</li>
-<li><span class="math inline">\(SS_{tot}\)</span> = soma total dos quadrados</li>
-</ul>
-<p><strong>Interpretação</strong>: R² próximo de 1 indica bom ajuste.</p>
+<section id="busca-de-linhas" class="level3">
+<h3 class="anchored" data-anchor-id="busca-de-linhas">3. Busca de Linhas</h3>
+<p>Permite buscar linhas por termo de pesquisa:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_linhas(<span class="va">self</span>, termo_busca):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca linhas de ônibus por termo"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Linha/Buscar?termosBusca=</span><span class="sc">{</span>termo_busca<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> <span class="va">self</span>.session.get(url)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="obtenção-de-dados-em-tempo-real" class="level3">
+<h3 class="anchored" data-anchor-id="obtenção-de-dados-em-tempo-real">4. Obtenção de Dados em Tempo Real</h3>
+<p>Duas funções principais coletam dados:</p>
+<section id="paradas-da-linha" class="level4">
+<h4 class="anchored" data-anchor-id="paradas-da-linha">Paradas da Linha</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_paradas(<span class="va">self</span>, codigo_linha):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca paradas de uma linha específica"""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Parada/BuscarParadasPorLinha?codigoLinha=</span><span class="sc">{</span>codigo_linha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.session.get(url).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="posições-dos-veículos" class="level4">
+<h4 class="anchored" data-anchor-id="posições-dos-veículos">Posições dos Veículos</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_posicoes(<span class="va">self</span>, codigo_linha):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca posições em tempo real dos ônibus"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Posicao/Linha?codigoLinha=</span><span class="sc">{</span>codigo_linha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.session.get(url).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="implementação" class="level2">
-<h2 class="anchored" data-anchor-id="implementação">Implementação</h2>
-<section id="carregamento-dos-dados" class="level3">
-<h3 class="anchored" data-anchor-id="carregamento-dos-dados">1. Carregamento dos Dados</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar dados dos arquivos</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X_data <span class="op">=</span> np.loadtxt(<span class="st">'X.txt'</span>)  <span class="co"># Anos de estudo</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y_data <span class="op">=</span> np.loadtxt(<span class="st">'y.txt'</span>)  <span class="co"># Salário</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="visualização-com-folium" class="level3">
+<h3 class="anchored" data-anchor-id="visualização-com-folium">5. Visualização com Folium</h3>
+<p>O mapa interativo é criado com diferentes marcadores:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular centro do mapa (média das coordenadas)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lat_centro <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'py'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lon_centro <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'px'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar mapa base</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>mapa <span class="op">=</span> Map(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[lat_centro, lon_centro],</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">13</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">'OpenStreetMap'</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="marcadores-de-paradas-azul" class="level4">
+<h4 class="anchored" data-anchor-id="marcadores-de-paradas-azul">Marcadores de Paradas (Azul)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Marker(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[parada[<span class="st">'py'</span>], parada[<span class="st">'px'</span>]],</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    popup<span class="op">=</span><span class="ss">f"&lt;b&gt;Parada: </span><span class="sc">{</span>parada[<span class="st">'np'</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;&lt;br&gt;Endereço: </span><span class="sc">{</span>parada[<span class="st">'ed'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    icon<span class="op">=</span>Icon(color<span class="op">=</span><span class="st">'blue'</span>, icon<span class="op">=</span><span class="st">'stop'</span>, prefix<span class="op">=</span><span class="st">'fa'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>).add_to(mapa)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="construção-da-matriz-x" class="level3">
-<h3 class="anchored" data-anchor-id="construção-da-matriz-x">2. Construção da Matriz X</h3>
-<p>A matriz X precisa incluir uma coluna de 1s para o intercepto:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># X_matriz = [1, x1]</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#            [1, x2]</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#            [1, x3]</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#            ...</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X_matriz <span class="op">=</span> np.vstack([np.ones(<span class="bu">len</span>(X_data)), X_data]).T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Explicação</strong>: <code>np.vstack</code> empilha arrays verticalmente, criando a matriz com duas colunas.</p>
+<section id="marcadores-de-ônibus-vermelho" class="level4">
+<h4 class="anchored" data-anchor-id="marcadores-de-ônibus-vermelho">Marcadores de Ônibus (Vermelho)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Marker(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[veiculo[<span class="st">'py'</span>], veiculo[<span class="st">'px'</span>]],</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    popup<span class="op">=</span><span class="ss">f"&lt;b&gt;🚌 Ônibus - Prefixo: </span><span class="sc">{</span>veiculo[<span class="st">'p'</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    icon<span class="op">=</span>Icon(color<span class="op">=</span><span class="st">'red'</span>, icon<span class="op">=</span><span class="st">'bus'</span>, prefix<span class="op">=</span><span class="st">'fa'</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>).add_to(mapa)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="cálculo-dos-coeficientes" class="level3">
-<h3 class="anchored" data-anchor-id="cálculo-dos-coeficientes">3. Cálculo dos Coeficientes</h3>
-<p>Aplicando a fórmula matricial:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># β = (X'X)^(-1) X'y</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> np.linalg.inv(X_matriz.T <span class="op">@</span> X_matriz) <span class="op">@</span> X_matriz.T <span class="op">@</span> y_data</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> beta[<span class="dv">0</span>], beta[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Operações</strong>: - <code>X_matriz.T</code> = transposta de X - <code>@</code> = multiplicação matricial - <code>np.linalg.inv()</code> = inversa da matriz</p>
 </section>
-<section id="predições-e-avaliação" class="level3">
-<h3 class="anchored" data-anchor-id="predições-e-avaliação">4. Predições e Avaliação</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular valores preditos</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> a <span class="op">+</span> b <span class="op">*</span> X_data</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular R²</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ss_res <span class="op">=</span> np.<span class="bu">sum</span>((y_data <span class="op">-</span> y_pred) <span class="op">**</span> <span class="dv">2</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ss_tot <span class="op">=</span> np.<span class="bu">sum</span>((y_data <span class="op">-</span> np.mean(y_data)) <span class="op">**</span> <span class="dv">2</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>r_squared <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (ss_res <span class="op">/</span> ss_tot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="visualização" class="level3">
-<h3 class="anchored" data-anchor-id="visualização">5. Visualização</h3>
-<p>Criamos um gráfico com: - Pontos observados (dados reais) - Linha de regressão (modelo ajustado)</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Pontos observados</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>X_data, y<span class="op">=</span>y_data,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'markers'</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Dados Observados'</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="dv">5</span>, opacity<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Linha de regressão</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>X_data, y<span class="op">=</span>y_pred,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'lines'</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'Regressão Linear (R²=</span><span class="sc">{</span>r_squared<span class="sc">:.3f}</span><span class="ss">)'</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, width<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="legenda-personalizada" class="level3">
+<h3 class="anchored" data-anchor-id="legenda-personalizada">6. Legenda Personalizada</h3>
+<p>Uma legenda HTML é adicionada ao mapa:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>legenda_html <span class="op">=</span> <span class="ss">f'''</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ss">&lt;div style="position: fixed; top: 10px; right: 10px; ..."&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;h4&gt;Linha </span><span class="sc">{</span>nome_linha<span class="sc">}</span><span class="ss">&lt;/h4&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;&lt;i class="fa fa-stop" style="color:blue"&gt;&lt;/i&gt; Paradas: </span><span class="sc">{</span><span class="bu">len</span>(paradas)<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;&lt;i class="fa fa-bus" style="color:red"&gt;&lt;/i&gt; Ônibus ativos: </span><span class="sc">{</span><span class="bu">len</span>(veiculos)<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;Horário: </span><span class="sc">{</span>hora_consulta<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ss">&lt;/div&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ss">'''</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="resultados" class="level2">
 <h2 class="anchored" data-anchor-id="resultados">Resultados</h2>
-<section id="equação-obtida" class="level3">
-<h3 class="anchored" data-anchor-id="equação-obtida">Equação Obtida</h3>
-<p>Para o dataset fornecido, a equação da reta é:</p>
-<p><span class="math display">\[
-\text{Salário} = a + b \times \text{Anos de Estudo}
-\]</span></p>
-<p>Onde: - <strong>Intercepto (a)</strong>: R$ XXXX.XX - <strong>Coeficiente (b)</strong>: R$ XXXX.XX por ano</p>
-<p><strong>Interpretação</strong>: A cada ano adicional de estudo, o salário aumenta em média R$ XXXX.XX.</p>
-</section>
-<section id="qualidade-do-ajuste" class="level3">
-<h3 class="anchored" data-anchor-id="qualidade-do-ajuste">Qualidade do Ajuste</h3>
+<p>Para a linha <strong>2780-10</strong> (exemplo), obtivemos:</p>
 <ul>
-<li><strong>R²</strong>: 0.XXXX (XX.X%)</li>
-<li>Isso significa que XX% da variabilidade dos salários é explicada pelos anos de estudo</li>
+<li><strong>XX paradas</strong> mapeadas</li>
+<li><strong>X ônibus</strong> em circulação no momento da consulta</li>
+<li>Dados atualizados em tempo real</li>
 </ul>
-</section>
-<section id="gráfico-interativo" class="level3">
-<h3 class="anchored" data-anchor-id="gráfico-interativo">Gráfico Interativo</h3>
-<p><a href="regressao_linear.html">Clique aqui para visualizar o gráfico completo</a></p>
-<p>O gráfico permite: - Identificar outliers - Verificar a dispersão dos dados - Avaliar visualmente a qualidade do ajuste</p>
+<section id="mapa-interativo" class="level3">
+<h3 class="anchored" data-anchor-id="mapa-interativo">Mapa Interativo</h3>
+<p><a href="mapa_linha_2503.html">Clique aqui para visualizar o mapa completo</a></p>
+<p><strong>Legenda</strong>: - 🔵 <strong>Pins azuis</strong>: Paradas da linha - 🔴 <strong>Pins vermelhos</strong>: Ônibus em circulação</p>
 </section>
 </section>
 <section id="código-completo" class="level2">
 <h2 class="anchored" data-anchor-id="código-completo">Código Completo</h2>
-<div id="ebb04708" class="cell" data-execution_count="1">
+<div id="08dfc9ee" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Ver código completo</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calcular_regressao_linear(arquivo_x<span class="op">=</span><span class="st">'X.txt'</span>, arquivo_y<span class="op">=</span><span class="st">'y.txt'</span>):</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula regressão linear usando fórmula matricial.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [Código completo da função]</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    resultado <span class="op">=</span> calcular_regressao_linear(<span class="st">'X.txt'</span>, <span class="st">'y.txt'</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(resultado)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> folium <span class="im">import</span> Map, Marker, Icon</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>TOKEN <span class="op">=</span> <span class="st">"seu_token_aqui"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MonitoramentoOnibus:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [Código completo da classe]</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    monitor <span class="op">=</span> MonitoramentoOnibus(TOKEN)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    linhas <span class="op">=</span> monitor.buscar_linhas(<span class="st">"Paulista"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    mapa <span class="op">=</span> monitor.criar_mapa(codigo_linha<span class="op">=</span><span class="dv">2503</span>, nome_linha<span class="op">=</span><span class="st">"2780-10"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="análise-dos-resultados" class="level2">
-<h2 class="anchored" data-anchor-id="análise-dos-resultados">Análise dos Resultados</h2>
-<section id="pontos-fortes" class="level3">
-<h3 class="anchored" data-anchor-id="pontos-fortes">Pontos Fortes</h3>
-<ul>
-<li>A relação entre anos de estudo e salário é <strong>positiva e linear</strong></li>
-<li>O R² indica um <strong>bom ajuste</strong> do modelo</li>
-<li>Os dados seguem razoavelmente a linha de tendência</li>
-</ul>
-</section>
-<section id="limitações" class="level3">
-<h3 class="anchored" data-anchor-id="limitações">Limitações</h3>
-<ul>
-<li>Outros fatores podem influenciar o salário (experiência, área, localização)</li>
-<li>Outliers podem indicar casos especiais</li>
-<li>A relação pode não ser perfeitamente linear em toda a extensão</li>
-</ul>
-</section>
+<section id="desafios-encontrados" class="level2">
+<h2 class="anchored" data-anchor-id="desafios-encontrados">Desafios Encontrados</h2>
+<ol type="1">
+<li><strong>Autenticação</strong>: A API exige manter a sessão autenticada</li>
+<li><strong>Coordenadas</strong>: Trabalhar com latitude e longitude (py, px)</li>
+<li><strong>Dados em tempo real</strong>: Os dados mudam constantemente</li>
+<li><strong>Performance</strong>: Minimizar chamadas à API</li>
+</ol>
 </section>
 <section id="aprendizados" class="level2">
 <h2 class="anchored" data-anchor-id="aprendizados">Aprendizados</h2>
 <ol type="1">
-<li><strong>Álgebra Linear</strong>: Aplicação prática de operações matriciais</li>
-<li><strong>Regressão Linear</strong>: Implementação do zero, entendendo cada etapa</li>
-<li><strong>Interpretação</strong>: Como ler e comunicar resultados estatísticos</li>
-<li><strong>NumPy</strong>: Uso eficiente de operações vetorizadas</li>
+<li><strong>APIs com autenticação</strong>: Uso de sessions do requests</li>
+<li><strong>Mapas interativos</strong>: Biblioteca Folium e suas customizações</li>
+<li><strong>Dados geoespaciais</strong>: Trabalhar com coordenadas e visualizações</li>
+<li><strong>HTML/CSS</strong>: Criar elementos personalizados no mapa</li>
 </ol>
-</section>
-<section id="comparação-com-bibliotecas-prontas" class="level2">
-<h2 class="anchored" data-anchor-id="comparação-com-bibliotecas-prontas">Comparação com Bibliotecas Prontas</h2>
-<p>Nossa implementação é equivalente a:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>model.fit(X_data.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y_data)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Nosso resultado deve ser igual a:</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># model.intercept_ == a</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model.coef_[0] == b</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># model.score(X_data.reshape(-1, 1), y_data) == r_squared</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="possíveis-melhorias" class="level2">
 <h2 class="anchored" data-anchor-id="possíveis-melhorias">Possíveis Melhorias</h2>
 <ul>
-<li>Adicionar intervalos de confiança</li>
-<li>Implementar validação cruzada</li>
-<li>Detectar e tratar outliers automaticamente</li>
-<li>Testar transformações não-lineares</li>
-<li>Adicionar mais features (regressão múltipla)</li>
-</ul>
-</section>
-<section id="referências" class="level2">
-<h2 class="anchored" data-anchor-id="referências">Referências</h2>
-<ul>
-<li><a href="https://numpy.org/doc/">NumPy Documentation</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Linear_regression">Linear Regression Theory</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">Ordinary Least Squares</a></li>
+<li>Auto-atualização do mapa a cada X segundos</li>
+<li>Filtros por região ou horário</li>
+<li>Histórico de posições (tracking)</li>
+<li>Previsão de chegada nas paradas</li>
+<li>Interface web completa com Flask/Django</li>
 </ul>
 <hr>
 <p><strong>Repositório</strong>: <a href="https://github.com/seu-usuario/seu-repo">Link para o código no GitHub</a></p>
@@ -929,249 +851,202 @@ R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Atividade 03 - Regressão Linear com Álgebra Matricial"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Seu Nome"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024-11-23"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [python, machine-learning, estatística, matemática]</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "thumbnail.jpg"</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>Implementar regressão linear do zero usando álgebra matricial (sem bibliotecas de ML prontas) para prever salários baseados em anos de estudo.</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tecnologias Utilizadas</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Python 3.x**</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**numpy**: Para operações matriciais</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**pandas**: Para manipulação de dados</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**plotly**: Para visualização</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fundamentação Matemática</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fórmula da Regressão Linear</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>A regressão linear busca encontrar a melhor reta que se ajusta aos dados:</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>y = a + bx</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>Onde:</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$y$ = variável dependente (salário)</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$x$ = variável independente (anos de estudo)</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$a$ = intercepto</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$b$ = coeficiente angular</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### Solução Matricial</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Usando álgebra linear, podemos resolver o sistema usando:</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>\beta = (X^TX)^{-1}X^Ty</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>Onde:</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\beta$ = vetor de coeficientes $<span class="co">[</span><span class="ot">a, b</span><span class="co">]</span>$</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ = matriz de design (com coluna de 1s para o intercepto)</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$y$ = vetor de respostas</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="fu">### Coeficiente de Determinação (R²)</span></span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>Mede a qualidade do ajuste:</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>R^2 = 1 - \frac{SS_{res}}{SS_{tot}}</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$SS_{res}$ = soma dos quadrados dos resíduos</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$SS_{tot}$ = soma total dos quadrados</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>**Interpretação**: R² próximo de 1 indica bom ajuste.</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Implementação</span></span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Carregamento dos Dados</span></span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar dados dos arquivos</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>X_data <span class="op">=</span> np.loadtxt(<span class="st">'X.txt'</span>)  <span class="co"># Anos de estudo</span></span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>y_data <span class="op">=</span> np.loadtxt(<span class="st">'y.txt'</span>)  <span class="co"># Salário</span></span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Construção da Matriz X</span></span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>A matriz X precisa incluir uma coluna de 1s para o intercepto:</span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="co"># X_matriz = [1, x1]</span></span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="co">#            [1, x2]</span></span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="co">#            [1, x3]</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="co">#            ...</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>X_matriz <span class="op">=</span> np.vstack([np.ones(<span class="bu">len</span>(X_data)), X_data]).T</span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>**Explicação**: <span class="in">`np.vstack`</span> empilha arrays verticalmente, criando a matriz com duas colunas.</span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Cálculo dos Coeficientes</span></span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>Aplicando a fórmula matricial:</span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="co"># β = (X'X)^(-1) X'y</span></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> np.linalg.inv(X_matriz.T <span class="op">@</span> X_matriz) <span class="op">@</span> X_matriz.T <span class="op">@</span> y_data</span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> beta[<span class="dv">0</span>], beta[<span class="dv">1</span>]</span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>**Operações**:</span>
-<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`X_matriz.T`</span> = transposta de X</span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`@`</span> = multiplicação matricial</span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`np.linalg.inv()`</span> = inversa da matriz</span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Predições e Avaliação</span></span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular valores preditos</span></span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> a <span class="op">+</span> b <span class="op">*</span> X_data</span>
-<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular R²</span></span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>ss_res <span class="op">=</span> np.<span class="bu">sum</span>((y_data <span class="op">-</span> y_pred) <span class="op">**</span> <span class="dv">2</span>)</span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>ss_tot <span class="op">=</span> np.<span class="bu">sum</span>((y_data <span class="op">-</span> np.mean(y_data)) <span class="op">**</span> <span class="dv">2</span>)</span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>r_squared <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (ss_res <span class="op">/</span> ss_tot)</span>
-<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5. Visualização</span></span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>Criamos um gráfico com:</span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pontos observados (dados reais)</span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linha de regressão (modelo ajustado)</span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure()</span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Pontos observados</span></span>
-<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>X_data, y<span class="op">=</span>y_data,</span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'markers'</span>,</span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Dados Observados'</span>,</span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="dv">5</span>, opacity<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Linha de regressão</span></span>
-<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>X_data, y<span class="op">=</span>y_pred,</span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'lines'</span>,</span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'Regressão Linear (R²=</span><span class="sc">{</span>r_squared<span class="sc">:.3f}</span><span class="ss">)'</span>,</span>
-<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, width<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resultados</span></span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="fu">### Equação Obtida</span></span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a>Para o dataset fornecido, a equação da reta é:</span>
-<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a>\text{Salário} = a + b \times \text{Anos de Estudo}</span>
-<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a>Onde:</span>
-<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Intercepto (a)**: R$ XXXX.XX</span>
-<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Coeficiente (b)**: R$ XXXX.XX por ano</span>
-<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a>**Interpretação**: A cada ano adicional de estudo, o salário aumenta em média R$ XXXX.XX.</span>
-<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### Qualidade do Ajuste</span></span>
-<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R²**: 0.XXXX (XX.X%)</span>
-<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Isso significa que XX% da variabilidade dos salários é explicada pelos anos de estudo</span>
-<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### Gráfico Interativo</span></span>
-<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Clique aqui para visualizar o gráfico completo</span><span class="co">](regressao_linear.html)</span></span>
-<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a>O gráfico permite:</span>
-<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Identificar outliers</span>
-<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Verificar a dispersão dos dados</span>
-<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Avaliar visualmente a qualidade do ajuste</span>
-<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="fu">## Código Completo</span></span>
-<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Ver código completo"</span></span>
-<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
-<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calcular_regressao_linear(arquivo_x<span class="op">=</span><span class="st">'X.txt'</span>, arquivo_y<span class="op">=</span><span class="st">'y.txt'</span>):</span>
-<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula regressão linear usando fórmula matricial.</span></span>
-<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [Código completo da função]</span></span>
-<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
-<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a>    resultado <span class="op">=</span> calcular_regressao_linear(<span class="st">'X.txt'</span>, <span class="st">'y.txt'</span>)</span>
-<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(resultado)</span>
-<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Análise dos Resultados</span></span>
-<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pontos Fortes</span></span>
-<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A relação entre anos de estudo e salário é **positiva e linear**</span>
-<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>O R² indica um **bom ajuste** do modelo</span>
-<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Os dados seguem razoavelmente a linha de tendência</span>
-<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a><span class="fu">### Limitações</span></span>
-<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Outros fatores podem influenciar o salário (experiência, área, localização)</span>
-<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Outliers podem indicar casos especiais</span>
-<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A relação pode não ser perfeitamente linear em toda a extensão</span>
-<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Aprendizados</span></span>
-<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Álgebra Linear**: Aplicação prática de operações matriciais</span>
-<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Regressão Linear**: Implementação do zero, entendendo cada etapa</span>
-<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Interpretação**: Como ler e comunicar resultados estatísticos</span>
-<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**NumPy**: Uso eficiente de operações vetorizadas</span>
-<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparação com Bibliotecas Prontas</span></span>
-<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a>Nossa implementação é equivalente a:</span>
-<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
-<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>model.fit(X_data.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y_data)</span>
-<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a><span class="co"># Nosso resultado deve ser igual a:</span></span>
-<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a><span class="co"># model.intercept_ == a</span></span>
-<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a><span class="co"># model.coef_[0] == b</span></span>
-<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a><span class="co"># model.score(X_data.reshape(-1, 1), y_data) == r_squared</span></span>
-<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possíveis Melhorias</span></span>
-<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adicionar intervalos de confiança</span>
-<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Implementar validação cruzada</span>
-<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Detectar e tratar outliers automaticamente</span>
-<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testar transformações não-lineares</span>
-<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adicionar mais features (regressão múltipla)</span>
-<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências</span></span>
-<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">NumPy Documentation</span><span class="co">](https://numpy.org/doc/)</span></span>
-<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Linear Regression Theory</span><span class="co">](https://en.wikipedia.org/wiki/Linear_regression)</span></span>
-<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Ordinary Least Squares</span><span class="co">](https://en.wikipedia.org/wiki/Ordinary_least_squares)</span></span>
-<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a>**Repositório**: <span class="co">[</span><span class="ot">Link para o código no GitHub</span><span class="co">](https://github.com/seu-usuario/seu-repo)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Atividade 02 - Monitoramento de Ônibus em Tempo Real"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Seu Nome"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024-11-23"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [python, api, mapas, geolocalização]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "thumbnail.jpg"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Criar um sistema de monitoramento em tempo real de ônibus da SPTrans utilizando a API Olho Vivo, com visualização em mapa interativo.</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tecnologias Utilizadas</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Python 3.x**</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**requests**: Para autenticação e requisições à API</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**folium**: Para criar mapas interativos</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**API SPTrans Olho Vivo**: Dados de transporte público de São Paulo</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Arquitetura da Solução</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Autenticação</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>A API SPTrans exige autenticação via POST com um token:</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> autenticar(<span class="va">self</span>):</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Autentica na API da SPTrans"""</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Login/Autenticar?token=</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>token<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> <span class="va">self</span>.session.post(url)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.text <span class="op">==</span> <span class="st">"true"</span>:</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✓ Autenticação realizada com sucesso!"</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>**Importante**: A sessão autenticada deve ser mantida para todas as requisições subsequentes.</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Classe MonitoramentoOnibus</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>Implementei uma classe para encapsular todas as funcionalidades:</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MonitoramentoOnibus:</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, token):</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.token <span class="op">=</span> token</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.session <span class="op">=</span> requests.Session()</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.base_url <span class="op">=</span> <span class="st">"http://api.olhovivo.sptrans.com.br/v2.1"</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.autenticar()</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Busca de Linhas</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>Permite buscar linhas por termo de pesquisa:</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_linhas(<span class="va">self</span>, termo_busca):</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca linhas de ônibus por termo"""</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Linha/Buscar?termosBusca=</span><span class="sc">{</span>termo_busca<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> <span class="va">self</span>.session.get(url)</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.json()</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Obtenção de Dados em Tempo Real</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>Duas funções principais coletam dados:</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Paradas da Linha</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_paradas(<span class="va">self</span>, codigo_linha):</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca paradas de uma linha específica"""</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Parada/BuscarParadasPorLinha?codigoLinha=</span><span class="sc">{</span>codigo_linha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.session.get(url).json()</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Posições dos Veículos</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> buscar_posicoes(<span class="va">self</span>, codigo_linha):</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca posições em tempo real dos ônibus"""</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>base_url<span class="sc">}</span><span class="ss">/Posicao/Linha?codigoLinha=</span><span class="sc">{</span>codigo_linha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.session.get(url).json()</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5. Visualização com Folium</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>O mapa interativo é criado com diferentes marcadores:</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular centro do mapa (média das coordenadas)</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>lat_centro <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'py'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>lon_centro <span class="op">=</span> <span class="bu">sum</span>(p[<span class="st">'px'</span>] <span class="cf">for</span> p <span class="kw">in</span> paradas) <span class="op">/</span> <span class="bu">len</span>(paradas)</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar mapa base</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>mapa <span class="op">=</span> Map(</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[lat_centro, lon_centro],</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">13</span>,</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">'OpenStreetMap'</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Marcadores de Paradas (Azul)</span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>Marker(</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[parada[<span class="st">'py'</span>], parada[<span class="st">'px'</span>]],</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>    popup<span class="op">=</span><span class="ss">f"&lt;b&gt;Parada: </span><span class="sc">{</span>parada[<span class="st">'np'</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;&lt;br&gt;Endereço: </span><span class="sc">{</span>parada[<span class="st">'ed'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>    icon<span class="op">=</span>Icon(color<span class="op">=</span><span class="st">'blue'</span>, icon<span class="op">=</span><span class="st">'stop'</span>, prefix<span class="op">=</span><span class="st">'fa'</span>)</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>).add_to(mapa)</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Marcadores de Ônibus (Vermelho)</span></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>Marker(</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[veiculo[<span class="st">'py'</span>], veiculo[<span class="st">'px'</span>]],</span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>    popup<span class="op">=</span><span class="ss">f"&lt;b&gt;🚌 Ônibus - Prefixo: </span><span class="sc">{</span>veiculo[<span class="st">'p'</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;"</span>,</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>    icon<span class="op">=</span>Icon(color<span class="op">=</span><span class="st">'red'</span>, icon<span class="op">=</span><span class="st">'bus'</span>, prefix<span class="op">=</span><span class="st">'fa'</span>)</span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>).add_to(mapa)</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6. Legenda Personalizada</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>Uma legenda HTML é adicionada ao mapa:</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>legenda_html <span class="op">=</span> <span class="ss">f'''</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="ss">&lt;div style="position: fixed; top: 10px; right: 10px; ..."&gt;</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;h4&gt;Linha </span><span class="sc">{</span>nome_linha<span class="sc">}</span><span class="ss">&lt;/h4&gt;</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;&lt;i class="fa fa-stop" style="color:blue"&gt;&lt;/i&gt; Paradas: </span><span class="sc">{</span><span class="bu">len</span>(paradas)<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;&lt;i class="fa fa-bus" style="color:red"&gt;&lt;/i&gt; Ônibus ativos: </span><span class="sc">{</span><span class="bu">len</span>(veiculos)<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;p&gt;Horário: </span><span class="sc">{</span>hora_consulta<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="ss">&lt;/div&gt;</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="ss">'''</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resultados</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>Para a linha **2780-10** (exemplo), obtivemos:</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**XX paradas** mapeadas</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**X ônibus** em circulação no momento da consulta</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dados atualizados em tempo real</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="fu">### Mapa Interativo</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Clique aqui para visualizar o mapa completo</span><span class="co">](mapa_linha_2503.html)</span></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>**Legenda**:</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🔵 **Pins azuis**: Paradas da linha</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🔴 **Pins vermelhos**: Ônibus em circulação</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="fu">## Código Completo</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Ver código completo"</span></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> folium <span class="im">import</span> Map, Marker, Icon</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>TOKEN <span class="op">=</span> <span class="st">"seu_token_aqui"</span></span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MonitoramentoOnibus:</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [Código completo da classe]</span></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a>    monitor <span class="op">=</span> MonitoramentoOnibus(TOKEN)</span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a>    linhas <span class="op">=</span> monitor.buscar_linhas(<span class="st">"Paulista"</span>)</span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>    mapa <span class="op">=</span> monitor.criar_mapa(codigo_linha<span class="op">=</span><span class="dv">2503</span>, nome_linha<span class="op">=</span><span class="st">"2780-10"</span>)</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desafios Encontrados</span></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Autenticação**: A API exige manter a sessão autenticada</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Coordenadas**: Trabalhar com latitude e longitude (py, px)</span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Dados em tempo real**: Os dados mudam constantemente</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Performance**: Minimizar chamadas à API</span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="fu">## Aprendizados</span></span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**APIs com autenticação**: Uso de sessions do requests</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Mapas interativos**: Biblioteca Folium e suas customizações</span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Dados geoespaciais**: Trabalhar com coordenadas e visualizações</span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**HTML/CSS**: Criar elementos personalizados no mapa</span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possíveis Melhorias</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Auto-atualização do mapa a cada X segundos</span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Filtros por região ou horário</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Histórico de posições (tracking)</span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Previsão de chegada nas paradas</span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interface web completa com Flask/Django</span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a>**Repositório**: <span class="co">[</span><span class="ot">Link para o código no GitHub</span><span class="co">](https://github.com/seu-usuario/seu-repo)</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
