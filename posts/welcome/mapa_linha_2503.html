@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_adc7ea9c13e4a45135a19af6c0e620ac {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+        <div style="position: fixed; 
+                    top: 10px; right: 10px; 
+                    width: 280px; 
+                    background-color: white; 
+                    border:2px solid grey; 
+                    z-index:9999; 
+                    font-size:14px;
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);">
+            <h4 style="margin-top:0;">Linha 2780-10</h4>
+            <p><i class="fa fa-stop" style="color:blue"></i> <b>Paradas:</b> 1</p>
+            <p><i class="fa fa-bus" style="color:red"></i> <b>Ônibus ativos:</b> 3</p>
+            <p><b>Horário:</b> 16:13</p>
+            <hr style="margin: 8px 0;">
+            <small>Atualizado em: 23/11/2025 16:13:34</small>
+        </div>
+        
+    
+            <div class="folium-map" id="map_adc7ea9c13e4a45135a19af6c0e620ac" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_adc7ea9c13e4a45135a19af6c0e620ac = L.map(
+                "map_adc7ea9c13e4a45135a19af6c0e620ac",
+                {
+                    center: [-23.662256, -46.706246],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_a795b3647e5cf56b1bbde9c92ec86915 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a795b3647e5cf56b1bbde9c92ec86915.addTo(map_adc7ea9c13e4a45135a19af6c0e620ac);
+        
+    
+            var marker_1c21d32ee8d1f2bd08c10a87872851db = L.marker(
+                [-23.662256, -46.706246],
+                {
+}
+            ).addTo(map_adc7ea9c13e4a45135a19af6c0e620ac);
+        
+    
+            var icon_714b9ca28fc74c7a3e2f6c355143bac1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "stop",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9eed25ce723cc87da792c14151947cd6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9f2dbe21771913f55f452aad515ca680 = $(`<div id="html_9f2dbe21771913f55f452aad515ca680" style="width: 100.0%; height: 100.0%;"><b>Parada: PARADA EUSÉBIO STEVAUX B/C</b><br>Endereço: R GALENO DE CASTRO/ AV ENGENHEIRO EUSÉBIO STEVAUX<br>Código: 720010437</div>`)[0];
+                popup_9eed25ce723cc87da792c14151947cd6.setContent(html_9f2dbe21771913f55f452aad515ca680);
+            
+        
+
+        marker_1c21d32ee8d1f2bd08c10a87872851db.bindPopup(popup_9eed25ce723cc87da792c14151947cd6)
+        ;
+
+        
+    
+    
+            marker_1c21d32ee8d1f2bd08c10a87872851db.bindTooltip(
+                `<div>
+                     PARADA EUSÉBIO STEVAUX B/C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1c21d32ee8d1f2bd08c10a87872851db.setIcon(icon_714b9ca28fc74c7a3e2f6c355143bac1);
+            
+    
+            var marker_01ca2b69ac332605320ed9576292a301 = L.marker(
+                [-23.6571954375, -46.6958015],
+                {
+}
+            ).addTo(map_adc7ea9c13e4a45135a19af6c0e620ac);
+        
+    
+            var icon_b8cacb142b9ebe01578e95dfd0d69556 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c641660796cfaf5465ac05b63da9fdde = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d67289a3a3fb31b821ead2e2613d5914 = $(`<div id="html_d67289a3a3fb31b821ead2e2613d5914" style="width: 100.0%; height: 100.0%;"><b>🚍 Ônibus - Prefixo: 75412</b><br>Acessível: Sim<br>Última atualização: 2025-11-23T19:13:29Z<br>Coordenadas: (-23.657195, -46.695802)</div>`)[0];
+                popup_c641660796cfaf5465ac05b63da9fdde.setContent(html_d67289a3a3fb31b821ead2e2613d5914);
+            
+        
+
+        marker_01ca2b69ac332605320ed9576292a301.bindPopup(popup_c641660796cfaf5465ac05b63da9fdde)
+        ;
+
+        
+    
+    
+            marker_01ca2b69ac332605320ed9576292a301.bindTooltip(
+                `<div>
+                     Ônibus 75412
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_01ca2b69ac332605320ed9576292a301.setIcon(icon_b8cacb142b9ebe01578e95dfd0d69556);
+            
+    
+            var marker_1c388cf50db062f2f667d2aaef58c891 = L.marker(
+                [-23.6677575, -46.7351975],
+                {
+}
+            ).addTo(map_adc7ea9c13e4a45135a19af6c0e620ac);
+        
+    
+            var icon_0d1021c47f28833cdfc892e05ac093bc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dfa73c37a6b5506b2e1faeb71c4e9672 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_395cd55a0944f55b00be54177054f379 = $(`<div id="html_395cd55a0944f55b00be54177054f379" style="width: 100.0%; height: 100.0%;"><b>🚍 Ônibus - Prefixo: 75409</b><br>Acessível: Sim<br>Última atualização: 2025-11-23T19:12:49Z<br>Coordenadas: (-23.667758, -46.735197)</div>`)[0];
+                popup_dfa73c37a6b5506b2e1faeb71c4e9672.setContent(html_395cd55a0944f55b00be54177054f379);
+            
+        
+
+        marker_1c388cf50db062f2f667d2aaef58c891.bindPopup(popup_dfa73c37a6b5506b2e1faeb71c4e9672)
+        ;
+
+        
+    
+    
+            marker_1c388cf50db062f2f667d2aaef58c891.bindTooltip(
+                `<div>
+                     Ônibus 75409
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1c388cf50db062f2f667d2aaef58c891.setIcon(icon_0d1021c47f28833cdfc892e05ac093bc);
+            
+    
+            var marker_87152ddd3ec33e65305633b96b8aff52 = L.marker(
+                [-23.646586749999997, -46.645936000000006],
+                {
+}
+            ).addTo(map_adc7ea9c13e4a45135a19af6c0e620ac);
+        
+    
+            var icon_dc186e1e8a920262e8da0756c3e7cf68 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2fefc1b6d486d2b227f86840b4ceae22 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f5cd168fa3435bef17091dff7da3b66e = $(`<div id="html_f5cd168fa3435bef17091dff7da3b66e" style="width: 100.0%; height: 100.0%;"><b>🚍 Ônibus - Prefixo: 75407</b><br>Acessível: Sim<br>Última atualização: 2025-11-23T19:12:49Z<br>Coordenadas: (-23.646587, -46.645936)</div>`)[0];
+                popup_2fefc1b6d486d2b227f86840b4ceae22.setContent(html_f5cd168fa3435bef17091dff7da3b66e);
+            
+        
+
+        marker_87152ddd3ec33e65305633b96b8aff52.bindPopup(popup_2fefc1b6d486d2b227f86840b4ceae22)
+        ;
+
+        
+    
+    
+            marker_87152ddd3ec33e65305633b96b8aff52.bindTooltip(
+                `<div>
+                     Ônibus 75407
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_87152ddd3ec33e65305633b96b8aff52.setIcon(icon_dc186e1e8a920262e8da0756c3e7cf68);
+            
+</script>
+</html>
