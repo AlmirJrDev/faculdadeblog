@@ -1,0 +1,196 @@
+---
+title: "Atividade 02 - Monitoramento de Ônibus em Tempo Real"
+author: "Seu Nome"
+date: "2024-11-23"
+categories: [python, api, mapas, geolocalização]
+image: "thumbnail.jpg"
+---
+
+## Objetivo
+
+Criar um sistema de monitoramento em tempo real de ônibus da SPTrans utilizando a API Olho Vivo, com visualização em mapa interativo.
+
+## Tecnologias Utilizadas
+
+- **Python 3.x**
+- **requests**: Para autenticação e requisições à API
+- **folium**: Para criar mapas interativos
+- **API SPTrans Olho Vivo**: Dados de transporte público de São Paulo
+
+## Arquitetura da Solução
+
+### 1. Autenticação
+
+A API SPTrans exige autenticação via POST com um token:
+
+```python
+def autenticar(self):
+    """Autentica na API da SPTrans"""
+    url = f"{self.base_url}/Login/Autenticar?token={self.token}"
+    response = self.session.post(url)
+    if response.text == "true":
+        print("✓ Autenticação realizada com sucesso!")
+```
+
+**Importante**: A sessão autenticada deve ser mantida para todas as requisições subsequentes.
+
+### 2. Classe MonitoramentoOnibus
+
+Implementei uma classe para encapsular todas as funcionalidades:
+
+```python
+class MonitoramentoOnibus:
+    def __init__(self, token):
+        self.token = token
+        self.session = requests.Session()
+        self.base_url = "http://api.olhovivo.sptrans.com.br/v2.1"
+        self.autenticar()
+```
+
+### 3. Busca de Linhas
+
+Permite buscar linhas por termo de pesquisa:
+
+```python
+def buscar_linhas(self, termo_busca):
+    """Busca linhas de ônibus por termo"""
+    url = f"{self.base_url}/Linha/Buscar?termosBusca={termo_busca}"
+    response = self.session.get(url)
+    return response.json()
+```
+
+### 4. Obtenção de Dados em Tempo Real
+
+Duas funções principais coletam dados:
+
+#### Paradas da Linha
+```python
+def buscar_paradas(self, codigo_linha):
+    """Busca paradas de uma linha específica"""
+    url = f"{self.base_url}/Parada/BuscarParadasPorLinha?codigoLinha={codigo_linha}"
+    return self.session.get(url).json()
+```
+
+#### Posições dos Veículos
+```python
+def buscar_posicoes(self, codigo_linha):
+    """Busca posições em tempo real dos ônibus"""
+    url = f"{self.base_url}/Posicao/Linha?codigoLinha={codigo_linha}"
+    return self.session.get(url).json()
+```
+
+### 5. Visualização com Folium
+
+O mapa interativo é criado com diferentes marcadores:
+
+```python
+# Calcular centro do mapa (média das coordenadas)
+lat_centro = sum(p['py'] for p in paradas) / len(paradas)
+lon_centro = sum(p['px'] for p in paradas) / len(paradas)
+
+# Criar mapa base
+mapa = Map(
+    location=[lat_centro, lon_centro],
+    zoom_start=13,
+    tiles='OpenStreetMap'
+)
+```
+
+#### Marcadores de Paradas (Azul)
+```python
+Marker(
+    location=[parada['py'], parada['px']],
+    popup=f"<b>Parada: {parada['np']}</b><br>Endereço: {parada['ed']}",
+    icon=Icon(color='blue', icon='stop', prefix='fa')
+).add_to(mapa)
+```
+
+#### Marcadores de Ônibus (Vermelho)
+```python
+Marker(
+    location=[veiculo['py'], veiculo['px']],
+    popup=f"<b>🚌 Ônibus - Prefixo: {veiculo['p']}</b>",
+    icon=Icon(color='red', icon='bus', prefix='fa')
+).add_to(mapa)
+```
+
+### 6. Legenda Personalizada
+
+Uma legenda HTML é adicionada ao mapa:
+
+```python
+legenda_html = f'''
+<div style="position: fixed; top: 10px; right: 10px; ...">
+    <h4>Linha {nome_linha}</h4>
+    <p><i class="fa fa-stop" style="color:blue"></i> Paradas: {len(paradas)}</p>
+    <p><i class="fa fa-bus" style="color:red"></i> Ônibus ativos: {len(veiculos)}</p>
+    <p>Horário: {hora_consulta}</p>
+</div>
+'''
+```
+
+## Resultados
+
+Para a linha **2780-10** (exemplo), obtivemos:
+
+- **XX paradas** mapeadas
+- **X ônibus** em circulação no momento da consulta
+- Dados atualizados em tempo real
+
+### Mapa Interativo
+
+[Clique aqui para visualizar o mapa completo](mapa_linha_2503.html)
+
+**Legenda**:
+- 🔵 **Pins azuis**: Paradas da linha
+- 🔴 **Pins vermelhos**: Ônibus em circulação
+
+## Código Completo
+
+```{python}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Ver código completo"
+
+import requests
+import folium
+from folium import Map, Marker, Icon
+from datetime import datetime
+
+TOKEN = "seu_token_aqui"
+
+class MonitoramentoOnibus:
+    # [Código completo da classe]
+    pass
+
+if __name__ == "__main__":
+    monitor = MonitoramentoOnibus(TOKEN)
+    linhas = monitor.buscar_linhas("Paulista")
+    mapa = monitor.criar_mapa(codigo_linha=2503, nome_linha="2780-10")
+```
+
+## Desafios Encontrados
+
+1. **Autenticação**: A API exige manter a sessão autenticada
+2. **Coordenadas**: Trabalhar com latitude e longitude (py, px)
+3. **Dados em tempo real**: Os dados mudam constantemente
+4. **Performance**: Minimizar chamadas à API
+
+## Aprendizados
+
+1. **APIs com autenticação**: Uso de sessions do requests
+2. **Mapas interativos**: Biblioteca Folium e suas customizações
+3. **Dados geoespaciais**: Trabalhar com coordenadas e visualizações
+4. **HTML/CSS**: Criar elementos personalizados no mapa
+
+## Possíveis Melhorias
+
+- Auto-atualização do mapa a cada X segundos
+- Filtros por região ou horário
+- Histórico de posições (tracking)
+- Previsão de chegada nas paradas
+- Interface web completa com Flask/Django
+
+---
+
+**Repositório**: [Link para o código no GitHub](https://github.com/seu-usuario/seu-repo)

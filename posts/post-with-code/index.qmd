@@ -1,0 +1,243 @@
+---
+title: "Atividade 03 - Regressão Linear com Álgebra Matricial"
+author: "Seu Nome"
+date: "2024-11-23"
+categories: [python, machine-learning, estatística, matemática]
+image: "thumbnail.jpg"
+---
+
+## Objetivo
+
+Implementar regressão linear do zero usando álgebra matricial (sem bibliotecas de ML prontas) para prever salários baseados em anos de estudo.
+
+## Tecnologias Utilizadas
+
+- **Python 3.x**
+- **numpy**: Para operações matriciais
+- **pandas**: Para manipulação de dados
+- **plotly**: Para visualização
+
+## Fundamentação Matemática
+
+### Fórmula da Regressão Linear
+
+A regressão linear busca encontrar a melhor reta que se ajusta aos dados:
+
+$$
+y = a + bx
+$$
+
+Onde:
+- $y$ = variável dependente (salário)
+- $x$ = variável independente (anos de estudo)
+- $a$ = intercepto
+- $b$ = coeficiente angular
+
+### Solução Matricial
+
+Usando álgebra linear, podemos resolver o sistema usando:
+
+$$
+\beta = (X^TX)^{-1}X^Ty
+$$
+
+Onde:
+- $\beta$ = vetor de coeficientes $[a, b]$
+- $X$ = matriz de design (com coluna de 1s para o intercepto)
+- $y$ = vetor de respostas
+
+### Coeficiente de Determinação (R²)
+
+Mede a qualidade do ajuste:
+
+$$
+R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
+$$
+
+- $SS_{res}$ = soma dos quadrados dos resíduos
+- $SS_{tot}$ = soma total dos quadrados
+
+**Interpretação**: R² próximo de 1 indica bom ajuste.
+
+## Implementação
+
+### 1. Carregamento dos Dados
+
+```python
+# Carregar dados dos arquivos
+X_data = np.loadtxt('X.txt')  # Anos de estudo
+y_data = np.loadtxt('y.txt')  # Salário
+```
+
+### 2. Construção da Matriz X
+
+A matriz X precisa incluir uma coluna de 1s para o intercepto:
+
+```python
+# X_matriz = [1, x1]
+#            [1, x2]
+#            [1, x3]
+#            ...
+X_matriz = np.vstack([np.ones(len(X_data)), X_data]).T
+```
+
+**Explicação**: `np.vstack` empilha arrays verticalmente, criando a matriz com duas colunas.
+
+### 3. Cálculo dos Coeficientes
+
+Aplicando a fórmula matricial:
+
+```python
+# β = (X'X)^(-1) X'y
+beta = np.linalg.inv(X_matriz.T @ X_matriz) @ X_matriz.T @ y_data
+a, b = beta[0], beta[1]
+```
+
+**Operações**:
+- `X_matriz.T` = transposta de X
+- `@` = multiplicação matricial
+- `np.linalg.inv()` = inversa da matriz
+
+### 4. Predições e Avaliação
+
+```python
+# Calcular valores preditos
+y_pred = a + b * X_data
+
+# Calcular R²
+ss_res = np.sum((y_data - y_pred) ** 2)
+ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
+r_squared = 1 - (ss_res / ss_tot)
+```
+
+### 5. Visualização
+
+Criamos um gráfico com:
+- Pontos observados (dados reais)
+- Linha de regressão (modelo ajustado)
+
+```python
+fig = go.Figure()
+
+# Pontos observados
+fig.add_trace(go.Scatter(
+    x=X_data, y=y_data,
+    mode='markers',
+    name='Dados Observados',
+    marker=dict(color='blue', size=5, opacity=0.6)
+))
+
+# Linha de regressão
+fig.add_trace(go.Scatter(
+    x=X_data, y=y_pred,
+    mode='lines',
+    name=f'Regressão Linear (R²={r_squared:.3f})',
+    line=dict(color='red', width=2)
+))
+```
+
+## Resultados
+
+### Equação Obtida
+
+Para o dataset fornecido, a equação da reta é:
+
+$$
+\text{Salário} = a + b \times \text{Anos de Estudo}
+$$
+
+Onde:
+- **Intercepto (a)**: R$ XXXX.XX
+- **Coeficiente (b)**: R$ XXXX.XX por ano
+
+**Interpretação**: A cada ano adicional de estudo, o salário aumenta em média R$ XXXX.XX.
+
+### Qualidade do Ajuste
+
+- **R²**: 0.XXXX (XX.X%)
+- Isso significa que XX% da variabilidade dos salários é explicada pelos anos de estudo
+
+### Gráfico Interativo
+
+[Clique aqui para visualizar o gráfico completo](regressao_linear.html)
+
+O gráfico permite:
+- Identificar outliers
+- Verificar a dispersão dos dados
+- Avaliar visualmente a qualidade do ajuste
+
+## Código Completo
+
+```{python}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Ver código completo"
+
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+
+def calcular_regressao_linear(arquivo_x='X.txt', arquivo_y='y.txt'):
+    """
+    Calcula regressão linear usando fórmula matricial.
+    """
+    # [Código completo da função]
+    pass
+
+if __name__ == "__main__":
+    resultado = calcular_regressao_linear('X.txt', 'y.txt')
+    print(resultado)
+```
+
+## Análise dos Resultados
+
+### Pontos Fortes
+- A relação entre anos de estudo e salário é **positiva e linear**
+- O R² indica um **bom ajuste** do modelo
+- Os dados seguem razoavelmente a linha de tendência
+
+### Limitações
+- Outros fatores podem influenciar o salário (experiência, área, localização)
+- Outliers podem indicar casos especiais
+- A relação pode não ser perfeitamente linear em toda a extensão
+
+## Aprendizados
+
+1. **Álgebra Linear**: Aplicação prática de operações matriciais
+2. **Regressão Linear**: Implementação do zero, entendendo cada etapa
+3. **Interpretação**: Como ler e comunicar resultados estatísticos
+4. **NumPy**: Uso eficiente de operações vetorizadas
+
+## Comparação com Bibliotecas Prontas
+
+Nossa implementação é equivalente a:
+
+```python
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X_data.reshape(-1, 1), y_data)
+
+# Nosso resultado deve ser igual a:
+# model.intercept_ == a
+# model.coef_[0] == b
+# model.score(X_data.reshape(-1, 1), y_data) == r_squared
+```
+
+## Possíveis Melhorias
+
+- Adicionar intervalos de confiança
+- Implementar validação cruzada
+- Detectar e tratar outliers automaticamente
+- Testar transformações não-lineares
+- Adicionar mais features (regressão múltipla)
+
+## Referências
+
+- [NumPy Documentation](https://numpy.org/doc/)
+- [Linear Regression Theory](https://en.wikipedia.org/wiki/Linear_regression)
+- [Ordinary Least Squares](https://en.wikipedia.org/wiki/Ordinary_least_squares)
+
+---
+
+**Repositório**: [Link para o código no GitHub](https://github.com/seu-usuario/seu-repo)

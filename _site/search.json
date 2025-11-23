@@ -1,0 +1,156 @@
+[
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "",
+    "text": "Criar um sistema de monitoramento em tempo real de ônibus da SPTrans utilizando a API Olho Vivo, com visualização em mapa interativo."
+  },
+  {
+    "objectID": "posts/welcome/index.html#objetivo",
+    "href": "posts/welcome/index.html#objetivo",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "",
+    "text": "Criar um sistema de monitoramento em tempo real de ônibus da SPTrans utilizando a API Olho Vivo, com visualização em mapa interativo."
+  },
+  {
+    "objectID": "posts/welcome/index.html#tecnologias-utilizadas",
+    "href": "posts/welcome/index.html#tecnologias-utilizadas",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Tecnologias Utilizadas",
+    "text": "Tecnologias Utilizadas\n\nPython 3.x\nrequests: Para autenticação e requisições à API\nfolium: Para criar mapas interativos\nAPI SPTrans Olho Vivo: Dados de transporte público de São Paulo"
+  },
+  {
+    "objectID": "posts/welcome/index.html#arquitetura-da-solução",
+    "href": "posts/welcome/index.html#arquitetura-da-solução",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Arquitetura da Solução",
+    "text": "Arquitetura da Solução\n\n1. Autenticação\nA API SPTrans exige autenticação via POST com um token:\ndef autenticar(self):\n    \"\"\"Autentica na API da SPTrans\"\"\"\n    url = f\"{self.base_url}/Login/Autenticar?token={self.token}\"\n    response = self.session.post(url)\n    if response.text == \"true\":\n        print(\"✓ Autenticação realizada com sucesso!\")\nImportante: A sessão autenticada deve ser mantida para todas as requisições subsequentes.\n\n\n2. Classe MonitoramentoOnibus\nImplementei uma classe para encapsular todas as funcionalidades:\nclass MonitoramentoOnibus:\n    def __init__(self, token):\n        self.token = token\n        self.session = requests.Session()\n        self.base_url = \"http://api.olhovivo.sptrans.com.br/v2.1\"\n        self.autenticar()\n\n\n3. Busca de Linhas\nPermite buscar linhas por termo de pesquisa:\ndef buscar_linhas(self, termo_busca):\n    \"\"\"Busca linhas de ônibus por termo\"\"\"\n    url = f\"{self.base_url}/Linha/Buscar?termosBusca={termo_busca}\"\n    response = self.session.get(url)\n    return response.json()\n\n\n4. Obtenção de Dados em Tempo Real\nDuas funções principais coletam dados:\n\nParadas da Linha\ndef buscar_paradas(self, codigo_linha):\n    \"\"\"Busca paradas de uma linha específica\"\"\"\n    url = f\"{self.base_url}/Parada/BuscarParadasPorLinha?codigoLinha={codigo_linha}\"\n    return self.session.get(url).json()\n\n\nPosições dos Veículos\ndef buscar_posicoes(self, codigo_linha):\n    \"\"\"Busca posições em tempo real dos ônibus\"\"\"\n    url = f\"{self.base_url}/Posicao/Linha?codigoLinha={codigo_linha}\"\n    return self.session.get(url).json()\n\n\n\n5. Visualização com Folium\nO mapa interativo é criado com diferentes marcadores:\n# Calcular centro do mapa (média das coordenadas)\nlat_centro = sum(p['py'] for p in paradas) / len(paradas)\nlon_centro = sum(p['px'] for p in paradas) / len(paradas)\n\n# Criar mapa base\nmapa = Map(\n    location=[lat_centro, lon_centro],\n    zoom_start=13,\n    tiles='OpenStreetMap'\n)\n\nMarcadores de Paradas (Azul)\nMarker(\n    location=[parada['py'], parada['px']],\n    popup=f\"&lt;b&gt;Parada: {parada['np']}&lt;/b&gt;&lt;br&gt;Endereço: {parada['ed']}\",\n    icon=Icon(color='blue', icon='stop', prefix='fa')\n).add_to(mapa)\n\n\nMarcadores de Ônibus (Vermelho)\nMarker(\n    location=[veiculo['py'], veiculo['px']],\n    popup=f\"&lt;b&gt;🚌 Ônibus - Prefixo: {veiculo['p']}&lt;/b&gt;\",\n    icon=Icon(color='red', icon='bus', prefix='fa')\n).add_to(mapa)\n\n\n\n6. Legenda Personalizada\nUma legenda HTML é adicionada ao mapa:\nlegenda_html = f'''\n&lt;div style=\"position: fixed; top: 10px; right: 10px; ...\"&gt;\n    &lt;h4&gt;Linha {nome_linha}&lt;/h4&gt;\n    &lt;p&gt;&lt;i class=\"fa fa-stop\" style=\"color:blue\"&gt;&lt;/i&gt; Paradas: {len(paradas)}&lt;/p&gt;\n    &lt;p&gt;&lt;i class=\"fa fa-bus\" style=\"color:red\"&gt;&lt;/i&gt; Ônibus ativos: {len(veiculos)}&lt;/p&gt;\n    &lt;p&gt;Horário: {hora_consulta}&lt;/p&gt;\n&lt;/div&gt;\n'''"
+  },
+  {
+    "objectID": "posts/welcome/index.html#resultados",
+    "href": "posts/welcome/index.html#resultados",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Resultados",
+    "text": "Resultados\nPara a linha 2780-10 (exemplo), obtivemos:\n\nXX paradas mapeadas\nX ônibus em circulação no momento da consulta\nDados atualizados em tempo real\n\n\nMapa Interativo\nClique aqui para visualizar o mapa completo\nLegenda: - 🔵 Pins azuis: Paradas da linha - 🔴 Pins vermelhos: Ônibus em circulação"
+  },
+  {
+    "objectID": "posts/welcome/index.html#código-completo",
+    "href": "posts/welcome/index.html#código-completo",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Código Completo",
+    "text": "Código Completo\n\n\nVer código completo\nimport requests\nimport folium\nfrom folium import Map, Marker, Icon\nfrom datetime import datetime\n\nTOKEN = \"seu_token_aqui\"\n\nclass MonitoramentoOnibus:\n    # [Código completo da classe]\n    pass\n\nif __name__ == \"__main__\":\n    monitor = MonitoramentoOnibus(TOKEN)\n    linhas = monitor.buscar_linhas(\"Paulista\")\n    mapa = monitor.criar_mapa(codigo_linha=2503, nome_linha=\"2780-10\")"
+  },
+  {
+    "objectID": "posts/welcome/index.html#desafios-encontrados",
+    "href": "posts/welcome/index.html#desafios-encontrados",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Desafios Encontrados",
+    "text": "Desafios Encontrados\n\nAutenticação: A API exige manter a sessão autenticada\nCoordenadas: Trabalhar com latitude e longitude (py, px)\nDados em tempo real: Os dados mudam constantemente\nPerformance: Minimizar chamadas à API"
+  },
+  {
+    "objectID": "posts/welcome/index.html#aprendizados",
+    "href": "posts/welcome/index.html#aprendizados",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Aprendizados",
+    "text": "Aprendizados\n\nAPIs com autenticação: Uso de sessions do requests\nMapas interativos: Biblioteca Folium e suas customizações\nDados geoespaciais: Trabalhar com coordenadas e visualizações\nHTML/CSS: Criar elementos personalizados no mapa"
+  },
+  {
+    "objectID": "posts/welcome/index.html#possíveis-melhorias",
+    "href": "posts/welcome/index.html#possíveis-melhorias",
+    "title": "Atividade 02 - Monitoramento de Ônibus em Tempo Real",
+    "section": "Possíveis Melhorias",
+    "text": "Possíveis Melhorias\n\nAuto-atualização do mapa a cada X segundos\nFiltros por região ou horário\nHistórico de posições (tracking)\nPrevisão de chegada nas paradas\nInterface web completa com Flask/Django\n\n\nRepositório: Link para o código no GitHub"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "faculdade",
+    "section": "",
+    "text": "Atividade 03 - Regressão Linear com Álgebra Matricial\n\n\n\npython\n\nmachine-learning\n\nestatística\n\nmatemática\n\n\n\n\n\n\n\n\n\nNov 23, 2024\n\n\nSeu Nome\n\n\n\n\n\n\n\n\n\n\n\n\nAtividade 02 - Monitoramento de Ônibus em Tempo Real\n\n\n\npython\n\napi\n\nmapas\n\ngeolocalização\n\n\n\n\n\n\n\n\n\nNov 23, 2024\n\n\nSeu Nome\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "",
+    "text": "Implementar regressão linear do zero usando álgebra matricial (sem bibliotecas de ML prontas) para prever salários baseados em anos de estudo."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#objetivo",
+    "href": "posts/post-with-code/index.html#objetivo",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "",
+    "text": "Implementar regressão linear do zero usando álgebra matricial (sem bibliotecas de ML prontas) para prever salários baseados em anos de estudo."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#tecnologias-utilizadas",
+    "href": "posts/post-with-code/index.html#tecnologias-utilizadas",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Tecnologias Utilizadas",
+    "text": "Tecnologias Utilizadas\n\nPython 3.x\nnumpy: Para operações matriciais\npandas: Para manipulação de dados\nplotly: Para visualização"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#fundamentação-matemática",
+    "href": "posts/post-with-code/index.html#fundamentação-matemática",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Fundamentação Matemática",
+    "text": "Fundamentação Matemática\n\nFórmula da Regressão Linear\nA regressão linear busca encontrar a melhor reta que se ajusta aos dados:\n\\[\ny = a + bx\n\\]\nOnde: - \\(y\\) = variável dependente (salário) - \\(x\\) = variável independente (anos de estudo) - \\(a\\) = intercepto - \\(b\\) = coeficiente angular\n\n\nSolução Matricial\nUsando álgebra linear, podemos resolver o sistema usando:\n\\[\n\\beta = (X^TX)^{-1}X^Ty\n\\]\nOnde: - \\(\\beta\\) = vetor de coeficientes \\([a, b]\\) - \\(X\\) = matriz de design (com coluna de 1s para o intercepto) - \\(y\\) = vetor de respostas\n\n\nCoeficiente de Determinação (R²)\nMede a qualidade do ajuste:\n\\[\nR^2 = 1 - \\frac{SS_{res}}{SS_{tot}}\n\\]\n\n\\(SS_{res}\\) = soma dos quadrados dos resíduos\n\\(SS_{tot}\\) = soma total dos quadrados\n\nInterpretação: R² próximo de 1 indica bom ajuste."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#implementação",
+    "href": "posts/post-with-code/index.html#implementação",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Implementação",
+    "text": "Implementação\n\n1. Carregamento dos Dados\n# Carregar dados dos arquivos\nX_data = np.loadtxt('X.txt')  # Anos de estudo\ny_data = np.loadtxt('y.txt')  # Salário\n\n\n2. Construção da Matriz X\nA matriz X precisa incluir uma coluna de 1s para o intercepto:\n# X_matriz = [1, x1]\n#            [1, x2]\n#            [1, x3]\n#            ...\nX_matriz = np.vstack([np.ones(len(X_data)), X_data]).T\nExplicação: np.vstack empilha arrays verticalmente, criando a matriz com duas colunas.\n\n\n3. Cálculo dos Coeficientes\nAplicando a fórmula matricial:\n# β = (X'X)^(-1) X'y\nbeta = np.linalg.inv(X_matriz.T @ X_matriz) @ X_matriz.T @ y_data\na, b = beta[0], beta[1]\nOperações: - X_matriz.T = transposta de X - @ = multiplicação matricial - np.linalg.inv() = inversa da matriz\n\n\n4. Predições e Avaliação\n# Calcular valores preditos\ny_pred = a + b * X_data\n\n# Calcular R²\nss_res = np.sum((y_data - y_pred) ** 2)\nss_tot = np.sum((y_data - np.mean(y_data)) ** 2)\nr_squared = 1 - (ss_res / ss_tot)\n\n\n5. Visualização\nCriamos um gráfico com: - Pontos observados (dados reais) - Linha de regressão (modelo ajustado)\nfig = go.Figure()\n\n# Pontos observados\nfig.add_trace(go.Scatter(\n    x=X_data, y=y_data,\n    mode='markers',\n    name='Dados Observados',\n    marker=dict(color='blue', size=5, opacity=0.6)\n))\n\n# Linha de regressão\nfig.add_trace(go.Scatter(\n    x=X_data, y=y_pred,\n    mode='lines',\n    name=f'Regressão Linear (R²={r_squared:.3f})',\n    line=dict(color='red', width=2)\n))"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#resultados",
+    "href": "posts/post-with-code/index.html#resultados",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Resultados",
+    "text": "Resultados\n\nEquação Obtida\nPara o dataset fornecido, a equação da reta é:\n\\[\n\\text{Salário} = a + b \\times \\text{Anos de Estudo}\n\\]\nOnde: - Intercepto (a): R$ XXXX.XX - Coeficiente (b): R$ XXXX.XX por ano\nInterpretação: A cada ano adicional de estudo, o salário aumenta em média R$ XXXX.XX.\n\n\nQualidade do Ajuste\n\nR²: 0.XXXX (XX.X%)\nIsso significa que XX% da variabilidade dos salários é explicada pelos anos de estudo\n\n\n\nGráfico Interativo\nClique aqui para visualizar o gráfico completo\nO gráfico permite: - Identificar outliers - Verificar a dispersão dos dados - Avaliar visualmente a qualidade do ajuste"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#código-completo",
+    "href": "posts/post-with-code/index.html#código-completo",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Código Completo",
+    "text": "Código Completo\n\n\nVer código completo\nimport numpy as np\nimport pandas as pd\nimport plotly.graph_objects as go\n\ndef calcular_regressao_linear(arquivo_x='X.txt', arquivo_y='y.txt'):\n    \"\"\"\n    Calcula regressão linear usando fórmula matricial.\n    \"\"\"\n    # [Código completo da função]\n    pass\n\nif __name__ == \"__main__\":\n    resultado = calcular_regressao_linear('X.txt', 'y.txt')\n    print(resultado)"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#análise-dos-resultados",
+    "href": "posts/post-with-code/index.html#análise-dos-resultados",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Análise dos Resultados",
+    "text": "Análise dos Resultados\n\nPontos Fortes\n\nA relação entre anos de estudo e salário é positiva e linear\nO R² indica um bom ajuste do modelo\nOs dados seguem razoavelmente a linha de tendência\n\n\n\nLimitações\n\nOutros fatores podem influenciar o salário (experiência, área, localização)\nOutliers podem indicar casos especiais\nA relação pode não ser perfeitamente linear em toda a extensão"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#aprendizados",
+    "href": "posts/post-with-code/index.html#aprendizados",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Aprendizados",
+    "text": "Aprendizados\n\nÁlgebra Linear: Aplicação prática de operações matriciais\nRegressão Linear: Implementação do zero, entendendo cada etapa\nInterpretação: Como ler e comunicar resultados estatísticos\nNumPy: Uso eficiente de operações vetorizadas"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#comparação-com-bibliotecas-prontas",
+    "href": "posts/post-with-code/index.html#comparação-com-bibliotecas-prontas",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Comparação com Bibliotecas Prontas",
+    "text": "Comparação com Bibliotecas Prontas\nNossa implementação é equivalente a:\nfrom sklearn.linear_model import LinearRegression\n\nmodel = LinearRegression()\nmodel.fit(X_data.reshape(-1, 1), y_data)\n\n# Nosso resultado deve ser igual a:\n# model.intercept_ == a\n# model.coef_[0] == b\n# model.score(X_data.reshape(-1, 1), y_data) == r_squared"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#possíveis-melhorias",
+    "href": "posts/post-with-code/index.html#possíveis-melhorias",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Possíveis Melhorias",
+    "text": "Possíveis Melhorias\n\nAdicionar intervalos de confiança\nImplementar validação cruzada\nDetectar e tratar outliers automaticamente\nTestar transformações não-lineares\nAdicionar mais features (regressão múltipla)"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#referências",
+    "href": "posts/post-with-code/index.html#referências",
+    "title": "Atividade 03 - Regressão Linear com Álgebra Matricial",
+    "section": "Referências",
+    "text": "Referências\n\nNumPy Documentation\nLinear Regression Theory\nOrdinary Least Squares\n\n\nRepositório: Link para o código no GitHub"
+  }
+]
